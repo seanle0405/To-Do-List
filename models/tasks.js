@@ -2,10 +2,10 @@ const mongoose = require("mongoose")
 
 const taskSchema = new mongoose.Schema({
 	name: {type: String, required: true},
-	priority: {type: String. enum: ["High", "Medium", "Low"]}
+	priority: {type: String, enum: ["high", "medium", "low"]},
 	dueDate: Date,
 	relatedTo: [String],
-	Description: String
+	description: String
 })
 
 const Task = mongoose.model("Task", taskSchema)
