@@ -4,7 +4,14 @@
 	<% include ./partials/head.ejs %>
 </head>
 <body>
-	<h1>To Do List</h1>
-
+	<% include ./partials/nav.ejs%>
+	<%for(let i = 0; i < tasks.length;i++){%>
+	<div>
+		<h4><a href = "/tasks/<%=tasks[i].id%>"><%=tasks[i].name%></a></h4>
+		<h5>Priority: <%=tasks[i].priority%></h5>
+		<p><%=tasks[i].description%></p>
+		<a href = "/tasks/<%=tasks[i].id%>/edit">Edit</a>
+	</div>
+	<%}%>
 </body>
 </html>

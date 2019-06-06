@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<% include ./partials/head.ejs %>
+</head>
+<body>
+	<% include ./partials/nav.ejs%>
+	<h1>Edit Task</h1>
+	<form action="/tasks/<%=task.id%>?_method=PUT" method="POST">
+		Task: <input type="text" name="name" value="<%=task.name%>"><br/>
+		Priority:
+		<select name="priority">
+			<option value="high" 
+			<% if(task.priority === "high"){ %>
+                selected
+            <% } %>
+            >High</option>
+			<option value="medium"
+			<% if(task.priority === "medium"){ %>
+                selected
+            <% } %>
+			>Medium</option>
+			<option value="low"
+			<% if(task.priority === "low"){ %>
+                selected
+            <% } %>
+			>Low</option>
+		</select>
+		<br/>
+		Completed: 
+		<input type="checkbox" name="completed"
+            <% if(task.completed === true){ %>
+                checked
+            <% } %>
+            />
+         <br/>
+         Description:<br/>
+         <textarea rows = "3" cols = "50" name = "description"><%=task.description%></textarea>
+		<br/>
+		<input type="submit" name="" value="Submit Changes">
+	</form>
+
+</body>
+</html>
