@@ -5,13 +5,40 @@
 </head>
 <body>
 	<% include ./partials/nav.ejs%>
-	<%for(let i = 0; i < tasks.length;i++){%>
-	<div>
-		<h4><a href = "/tasks/<%=tasks[i].id%>"><%=tasks[i].name%></a></h4>
-		<h5>Priority: <%=tasks[i].priority%></h5>
-		<p><%=tasks[i].description%></p>
-		<a href = "/tasks/<%=tasks[i].id%>/edit">Edit</a>
+	<div class = "container">
+		<div class="priority-column">
+			<h2>High Priority Tasks</h2>
+			<%for(let i = 0; i < hTasks.length;i++){%>
+			<div class = "task">
+				<h4><a href = "/tasks/<%=hTasks[i].id%>"><%=hTasks[i].name%></a></h4>
+				<h5>Priority: <%=hTasks[i].priority%></h5>
+				<p><%=hTasks[i].description%></p>
+				<button onclick = "window.location.href='/tasks/<%=hTasks[i].id%>/edit'">Edit</button>
+			</div>
+			<%}%>
+		</div>
+		<div class="priority-column">
+			<h2>Medium Priority Tasks</h2>
+			<%for(let i = 0; i < mTasks.length;i++){%>
+			<div class = "task">
+				<h4><a href = "/tasks/<%=mTasks[i].id%>"><%=mTasks[i].name%></a></h4>
+				<h5>Priority: <%=mTasks[i].priority%></h5>
+				<p><%=mTasks[i].description%></p>
+				<button onclick = "window.location.href='/tasks/<%=mTasks[i].id%>/edit'">Edit</button>
+			</div>
+			<%}%>
+		</div>
+		<div class="priority-column">
+			<h2>Low Priority Tasks</h2>
+			<%for(let i = 0; i < lTasks.length;i++){%>
+			<div class = "task">
+				<h4><a href = "/tasks/<%=lTasks[i].id%>"><%=lTasks[i].name%></a></h4>
+				<h5>Priority: <%=lTasks[i].priority%></h5>
+				<p><%=lTasks[i].description%></p>
+				<button onclick = "window.location.href='/tasks/<%=lTasks[i].id%>/edit'">Edit</button>
+			</div>
+			<%}%>
+		</div>
 	</div>
-	<%}%>
 </body>
 </html>

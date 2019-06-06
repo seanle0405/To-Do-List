@@ -1,0 +1,20 @@
+body{
+
+}
+
+.container{
+	display: flex;
+	justify-content: space-around;
+	margin: 0;
+}
+
+.priority-column{
+	display: flex;
+	flex-direction: column;
+}
+
+.task{
+	height: 300px;
+	width: 500px;
+	text-align: left;
+}

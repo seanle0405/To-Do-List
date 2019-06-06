@@ -7,7 +7,7 @@ const Task = require("../models/tasks.js")
 //INDEX
 router.get("/", (req,res) =>{
 	Task.find({}, (err, allTasks)=>{
-		res.render("index.ejs", {tasks: allTasks})
+		res.render("index.ejs", {hTasks: allTasks.filter(task => task.priority === "high" && !task.completed), mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed), lTasks: allTasks.filter(task => task.priority === "low" && !task.completed)})
 	})
 })
 
