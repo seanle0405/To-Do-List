@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/seanle0405/To-Do-List#readme",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.17.1",
     "method-override": "^3.0.0",
     "mongoose": "^5.5.13"
