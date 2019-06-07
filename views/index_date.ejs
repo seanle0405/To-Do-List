@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<% include ./partials/head.ejs %>
+</head>
+<body>
+	<% include ./partials/nav.ejs %>
+	<div class = "date-column">
+		<%for(let i = 0; i < tasks.length;i++){%>
+		<%if(dates[i] != ""){%>
+			<h2><%=dates[i]%></h2>
+		<%}%>
+		<div class = "task">
+			<h4><a href = "/tasks/<%=tasks[i].id%>"><%=tasks[i].name%><a></h4>
+			<h5>Priority: <%=tasks[i].priority%></h5>
+			<p><%=tasks[i].description%></p>
+			<form action="/tasks/<%=tasks[i].id%>" method = "POST">
+				<input type="submit" name="" value="Completed">
+			</form>
+			<button onclick = "window.location.href='/tasks/<%=tasks[i].id%>/edit'">Edit</button>
+		</div>
+		<%}%>
+	</div>
+</body>
+</html>

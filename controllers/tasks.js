@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Task = require("../models/tasks.js")
+const moment = require("moment")
 
 const createRelatedList = (allTasks) =>{
 	let relatedList = []
@@ -12,19 +13,39 @@ const createRelatedList = (allTasks) =>{
 		}
 	}
 	return	relatedList
-}	
+}
 
+const createDateArray = (allTasks) =>{
+	let dateArray = [moment(allTasks[0].dueDate).format("MM/DD/YYYY")]
+	for (let i = 1; i < allTasks.length; i++){
+		if(moment(allTasks[i].dueDate).format("MM/DD/YYYY") != moment(allTasks[i-1].dueDate).format("MM/DD/YYYY")){
+			dateArray.push(moment(allTasks[i].dueDate).format("MM/DD/YYYY"))
+		}else{
+			dateArray.push("")
+		}
+	}
+	return dateArray
+}
 
 //INDEX
 router.get("/", (req,res) =>{
 	Task.find({}, (err, allTasks)=>{
-		
 		res.render("index.ejs", {
 			hTasks: allTasks.filter(task => task.priority === "high" && !task.completed),
 			mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed),
 			lTasks: allTasks.filter(task => task.priority === "low" && !task.completed),
 			cTasks: allTasks.filter(task => task.completed),
 			relatedTo: createRelatedList(allTasks)
+		})
+	})
+})
+//byDate
+router.get("/sort/date", (req,res) =>{
+	Task.find({}).sort("dueDate").exec((err, allTasks) =>{
+		res.render("index_date.ejs",{
+			tasks: allTasks.filter(task => !task.completed),
+			relatedTo: createRelatedList(allTasks),
+			dates: createDateArray(allTasks)
 		})
 	})
 })
@@ -39,6 +60,7 @@ router.post("/", (req,res)=>{
 		relatedTo[i] = relatedTo[i].trim()
 	}
 	req.body.relatedTo = relatedTo
+	req.body.dueDate = moment(req.body.dueDate).format()
 	Task.create(req.body, (err, createdTask)=>{
 		console.log(createdTask)
 		res.redirect("/tasks")
@@ -49,7 +71,9 @@ router.post("/", (req,res)=>{
 router.get("/:id", (req,res)=>{
 	Task.findById(req.params.id, (err, foundTask)=>{
 		console.log(foundTask)
-		res.render("show.ejs", {task: foundTask})
+		res.render("show.ejs", {
+			task: foundTask, 
+			date: moment(foundTask.dueDate).format("MMMM Do, YYYY")})
 	})
 })
 
@@ -67,7 +91,11 @@ router.get("/:id/edit", (req,res) =>{
 		for(let i = 1; i < foundTask.relatedTo.length; i++){
 			relatedTo += `,${foundTask.relatedTo[i]}`
 		}
-		res.render("edit.ejs", {task: foundTask, relatedTo: relatedTo})
+		res.render("edit.ejs", {
+			task: foundTask, 
+			relatedTo: relatedTo,
+			date: moment(foundTask.dueDate).format("MM/DD/YYYY")
+		})
 	})
 })
 
@@ -82,8 +110,9 @@ router.put("/:id", (req, res)=>{
 		relatedTo[i] = relatedTo[i].trim()
 	}
 	req.body.relatedTo = relatedTo
+	req.body.dueDate = moment(req.body.dueDate).format()
 	Task.findByIdAndUpdate(req.params.id, req.body,  (err, updatedModel)=>{
-		res.redirect("/tasks")
+		res.redirect("/tasks/"+ req.params.id)
 	})
 })
 
