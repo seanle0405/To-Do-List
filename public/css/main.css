@@ -1,5 +1,4 @@
 body{
-
 }
 
 .container{
@@ -11,17 +10,41 @@ body{
 .priority-column{
 	display: flex;
 	flex-direction: column;
-	width: 500px;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+.priority-column h2{
+	width: 400px;
 }
 
 .task{
-	height: 220px;
-	width: 400px;
+	height: 170px;
+	width: 380px;
 	text-align: left;
 	border-radius: 10px;
 	border: 1px solid blue;
 	margin: 3px;
-	padding: 5px;
+	padding: 10px;
+}
+
+.task a{
+	color: #0F5316;
+	margin: 0px;
+}
+
+.tasks h4{
+	font-size: 22px;
+}
+
+.task h5{
+	font-size: 20px;
+	padding: 0px;
+	margin: 5px;
+}
+
+.completed-tasks .task{
+	height: 180px;
 }
 
 form{
@@ -33,7 +56,8 @@ form{
 }
 .nav button{
 	float: right;
-	margin: 3px;
+	margin-top: 5px;
+	margin-right: 5px;
 }
 
 
@@ -47,8 +71,45 @@ form{
 	max-width: 420px;
 }
 .date-column h2{
-	color: red;
+	color: #E91540;
 }
 .date-column p{
 	color: black;
+}
+
+.show-containter{
+	margin: 0 auto;
+	max-width: 420px;
+	border-radius: 10%;
+	border: 1px solid blue;
+	padding: 30px;
+}
+
+.show-containter h1{
+	color: #0F5316;
+	text-decoration: underline;
+}
+
+.high-priority{
+	color: #8C0D11;
+}
+
+.medium-priority{
+	color: #AFBA0D;
+}
+
+.low-priority{
+	color: #1767AE;
+}
+
+.input-container{
+	margin: 0 auto;
+	max-width: 420px;
+	border-radius: 10%;
+	border: 1px solid pink;
+	padding: 30px;
+}
+
+.edit{
+	border: 1px solid blue;
 }

@@ -5,26 +5,37 @@
 </head>
 <body>
 	<% include ./partials/nav.ejs %>
-	<h1><%=task.name%></h1>
-	<h2>Priority: <%=task.priority%></h2>
-	<h2>Due Date: <%= date%></h2>
-	<h3>
-		Completed: 
-		<%if(task.completed){%>
-			Yes
-		<%}else{%>
-			No
-		<%}%>
-	</h3>
-	<h5>Related To: </h5>
-	<ul>
-		<%for(let i = 0; i < task.relatedTo.length; i++){%>
-			<li><%=task.relatedTo[i]%></li>
-		<%}%>
-	</ul>	
-	<form action="/tasks/<%=task.id%>?_method=DELETE" method="POST">
-		<input type="submit" name="" value="DELETE">
-	</form>
-	<button onclick = "window.location.href='/tasks/<%=task.id%>/edit'">Edit</button>
+	<div class = "show-containter">
+		<h1><%=task.name%></h1>
+		<h3 class = <%if(task.priority === "high"){%>
+						"high-priority"
+					<%}else if(task.priority === "medium"){%>
+						"medium-priority"
+					<%}else{%>
+						"low-priority"
+					<%}%>
+			>Priority: <%=task.priority%></h3>
+		<h3>Due Date: <%= date%></h3>
+		<h5>
+			Completed: 
+			<%if(task.completed){%>
+				Yes
+			<%}else{%>
+				No
+			<%}%>
+		</h5>
+		<h5>Related To: </h5>
+		<ul>
+			<%for(let i = 0; i < task.relatedTo.length; i++){%>
+				<li><%=task.relatedTo[i]%></li>
+			<%}%>
+		</ul>
+		<h5>Description:</h5>
+		<p><%=task.description%></p>	
+		<form action="/tasks/<%=task.id%>?_method=DELETE" method="POST">
+			<input type="submit" name="" value="DELETE">
+		</form>
+		<button onclick = "window.location.href='/tasks/<%=task.id%>/edit'">Edit</button>
+	</div>
 </body>
 </html>

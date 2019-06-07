@@ -6,14 +6,14 @@
 <body>
 	<% include ./partials/nav.ejs %>
 	<form action = "/tasks/sort/date/filter/relatedTo" method="POST">
-		Filter by Related To:
+		Related To:
 		<input type="text" name="relatedTo" list="related-list">
 		<datalist id = "related-list">
 			<%for(let i = 0; i < relatedTo.length; i++){%>
 			<option value = "<%=relatedTo[i]%>">
 			<%}%>
 		</datalist>
-		<input type="submit" name="" value = "Search"> 
+		<input type="submit" name="" value = "Filter"> 
 	</form>
 	<div class = "date-column">
 		<%for(let i = 0; i < tasks.length;i++){%>
@@ -22,7 +22,13 @@
 		<%}%>
 		<div class = "task">
 			<h4><a href = "/tasks/<%=tasks[i].id%>"><%=tasks[i].name%><a></h4>
-			<h5>Priority: <%=tasks[i].priority%></h5>
+			<h5 class = <%if(tasks[i].priority === "high"){%>
+						"high-priority"
+					<%}else if(tasks[i].priority === "medium"){%>
+						"medium-priority"
+					<%}else{%>
+						"low-priority"
+					<%}%>>Priority: <%=tasks[i].priority%></h5>
 			<p><%=tasks[i].description%></p>
 			<form action="/tasks/<%=tasks[i].id%>" method = "POST">
 				<input type="submit" name="" value="Completed">

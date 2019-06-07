@@ -5,22 +5,24 @@
 </head>
 <body>
 	<% include ./partials/nav.ejs %>
-	<h1>Create New Task</h1>
-	<form action = "/tasks" method="POST">
-		Task: <input type="text" name="name"><br/>
-		Priority: 
-		<select name="priority">
-			<option value="high">High</option>
-			<option value="medium">Medium</option>
-			<option value="low">Low</option>
-		</select>
-		<br/>
-		Due Date: <input type="text" name="dueDate" placeholder="mm/dd/yyy"><br/>
-		Related To: <input type="text" name="relatedTo" placeholder="tag1, tag2, tag3..."><br/>
-		Description: <br/>
-		<textarea rows = "3" cols = "50" name = "description"></textarea>
-		<br/>
-		<input type="submit" name="" value="Create New Task">
-	</form>
+	<div class = "input-container">
+		<h1>Create New Task</h1>
+		<form action = "/tasks" method="POST">
+			Task: <input type="text" name="name"><br/>
+			Priority: 
+			<select name="priority">
+				<option value="high">High</option>
+				<option value="medium">Medium</option>
+				<option value="low">Low</option>
+			</select>
+			<br/>
+			Due Date: <input type="text" name="dueDate" placeholder="mm/dd/yyy"><br/>
+			Related To: <input type="text" name="relatedTo" placeholder="tag1, tag2, tag3..."><br/>
+			Description: <br/>
+			<textarea rows = "3" cols = "50" name = "description"></textarea>
+			<br/>
+			<input type="submit" name="" value="Create New Task">
+		</form>
+	</div>	
 </body>
 </html>

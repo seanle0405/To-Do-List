@@ -16,13 +16,25 @@ const createRelatedList = (allTasks) =>{
 }
 
 const createDateArray = (allTasks) =>{
-	let dateArray = [moment(allTasks[0].dueDate).format("MM/DD/YYYY")]
-	for (let i = 1; i < allTasks.length; i++){
-		if(moment(allTasks[i].dueDate).format("MM/DD/YYYY") != moment(allTasks[i-1].dueDate).format("MM/DD/YYYY")){
-			dateArray.push(moment(allTasks[i].dueDate).format("MM/DD/YYYY"))
+	let dateArray = []
+	for (let i = 0; i < allTasks.length; i++){
+		if(i === 0){
+			dateArray.push(moment(allTasks[0].dueDate).format("MM/DD/YYYY"))
 		}else{
-			dateArray.push("")
-		}
+			if(moment(allTasks[i].dueDate).format("MM/DD/YYYY") != moment(allTasks[i-1].dueDate).format("MM/DD/YYYY")){
+				dateArray.push(moment(allTasks[i].dueDate).format("MM/DD/YYYY"))
+			}else{
+				dateArray.push("")
+			}
+		}	
+	}
+	return dateArray
+}
+
+const createAllDateArray = (allTasks) =>{
+	let dateArray = []
+	for(let i = 0; i<allTasks.length; i++){
+		dateArray.push(moment(allTasks[i].dueDate).format("MM/DD/YYYY"))
 	}
 	return dateArray
 }
@@ -35,6 +47,9 @@ router.get("/", (req,res) =>{
 			mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed),
 			lTasks: allTasks.filter(task => task.priority === "low" && !task.completed),
 			cTasks: allTasks.filter(task => task.completed),
+			hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed)),
+			mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed)),
+			lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed)),
 			relatedTo: createRelatedList(allTasks)
 		})
 	})
@@ -89,7 +104,7 @@ router.get("/:id/edit", (req,res) =>{
 	Task.findById(req.params.id, (err, foundTask)=>{
 		let relatedTo = foundTask.relatedTo[0]
 		for(let i = 1; i < foundTask.relatedTo.length; i++){
-			relatedTo += `,${foundTask.relatedTo[i]}`
+			relatedTo += `, ${foundTask.relatedTo[i]}`
 		}
 		res.render("edit.ejs", {
 			task: foundTask, 
@@ -134,6 +149,9 @@ router.get("/filter/:relatedTo", (req,res) =>{
 			mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
 			lTasks: allTasks.filter(task => task.priority === "low" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
 			cTasks: allTasks.filter(task => task.completed && task.relatedTo.includes(req.params.relatedTo)),
+			hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+			mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+			lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
 			relatedTo: createRelatedList(allTasks)
 		})
 	})
