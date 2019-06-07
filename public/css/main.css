@@ -11,10 +11,31 @@ body{
 .priority-column{
 	display: flex;
 	flex-direction: column;
+	width: 500px;
 }
 
 .task{
-	height: 300px;
-	width: 500px;
+	height: 220px;
+	width: 400px;
 	text-align: left;
+	border-radius: 10px;
+	border: 1px solid blue;
+	margin: 3px;
+	padding: 5px;
+}
+
+form{
+	display: inline-block;
+}
+
+.nav h1{
+	display: inline-block;
+}
+.nav button{
+	float: right;
+	margin: 3px;
+}
+
+.completed-tasks .task{
+	border: 1px solid red;
 }

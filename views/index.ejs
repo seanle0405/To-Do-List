@@ -13,6 +13,9 @@
 				<h4><a href = "/tasks/<%=hTasks[i].id%>"><%=hTasks[i].name%></a></h4>
 				<h5>Priority: <%=hTasks[i].priority%></h5>
 				<p><%=hTasks[i].description%></p>
+				<form action="/tasks/<%=hTasks[i].id%>" method = "POST">
+					<input type="submit" name="" value="Completed">
+				</form>
 				<button onclick = "window.location.href='/tasks/<%=hTasks[i].id%>/edit'">Edit</button>
 			</div>
 			<%}%>
@@ -24,6 +27,9 @@
 				<h4><a href = "/tasks/<%=mTasks[i].id%>"><%=mTasks[i].name%></a></h4>
 				<h5>Priority: <%=mTasks[i].priority%></h5>
 				<p><%=mTasks[i].description%></p>
+				<form action="/tasks/<%=mTasks[i].id%>" method = "POST">
+					<input type="submit" name="" value="Completed">
+				</form>
 				<button onclick = "window.location.href='/tasks/<%=mTasks[i].id%>/edit'">Edit</button>
 			</div>
 			<%}%>
@@ -35,10 +41,28 @@
 				<h4><a href = "/tasks/<%=lTasks[i].id%>"><%=lTasks[i].name%></a></h4>
 				<h5>Priority: <%=lTasks[i].priority%></h5>
 				<p><%=lTasks[i].description%></p>
+				<form action="/tasks/<%=lTasks[i].id%>" method = "POST">
+					<input type="submit" name="" value="Completed">
+				</form>
 				<button onclick = "window.location.href='/tasks/<%=lTasks[i].id%>/edit'">Edit</button>
 			</div>
 			<%}%>
 		</div>
+	</div>
+	<div class="completed-tasks">
+		<h2>Completed</h2>
+			<%for(let i = 0; i < cTasks.length;i++){%>
+			<div class = "task">
+				<h4><a href = "/tasks/<%=cTasks[i].id%>"><%=cTasks[i].name%></a></h4>
+				<h5>Priority: <%=cTasks[i].priority%></h5>
+				<p><%=cTasks[i].description%></p>
+				<form action="/tasks/<%=cTasks[i].id%>" method = "POST">
+					<input type="submit" name="" value="Undo">
+				</form>
+				<button onclick = "window.location.href='/tasks/<%=cTasks[i].id%>/edit'">Edit</button>
+			</div>
+			<%}%>
+		</div>		
 	</div>
 </body>
 </html>

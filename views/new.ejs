@@ -4,6 +4,7 @@
 	<% include ./partials/head.ejs %>
 </head>
 <body>
+	<% include ./partials/nav.ejs %>
 	<h1>Create New Task</h1>
 	<form action = "/tasks" method="POST">
 		Task: <input type="text" name="name"><br/>
@@ -14,8 +15,9 @@
 			<option value="low">Low</option>
 		</select>
 		<br/>
+		Related To: <input type="text" name="relatedTo" placeholder="tag1, tag2, tag3..."><br/>
 		Description: <br/>
-		<textarea rows = "3" cols = "50" name = "description">Description.</textarea>
+		<textarea rows = "3" cols = "50" name = "description"></textarea>
 		<br/>
 		<input type="submit" name="" value="Create New Task">
 	</form>
