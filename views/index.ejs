@@ -69,7 +69,9 @@
 				<form action="/tasks/<%=cTasks[i].id%>" method = "POST">
 					<input type="submit" name="" value="Undo">
 				</form>
-				<button onclick = "window.location.href='/tasks/<%=cTasks[i].id%>/edit'">Edit</button>
+				<form action="/tasks/<%=cTasks[i].id%>?_method=DELETE" method="POST">
+					<input type="submit" name="" value="DELETE">
+				</form>
 			</div>
 			<%}%>
 		</div>		

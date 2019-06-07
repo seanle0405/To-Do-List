@@ -36,6 +36,19 @@ form{
 	margin: 3px;
 }
 
+
 .completed-tasks .task{
 	border: 1px solid red;
+	display: inline-block;
+}
+
+.date-column{
+	margin: 0 auto;
+	max-width: 420px;
+}
+.date-column h2{
+	color: red;
+}
+.date-column p{
+	color: black;
 }

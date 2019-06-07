@@ -5,6 +5,16 @@
 </head>
 <body>
 	<% include ./partials/nav.ejs %>
+	<form action = "/tasks/sort/date/filter/relatedTo" method="POST">
+		Filter by Related To:
+		<input type="text" name="relatedTo" list="related-list">
+		<datalist id = "related-list">
+			<%for(let i = 0; i < relatedTo.length; i++){%>
+			<option value = "<%=relatedTo[i]%>">
+			<%}%>
+		</datalist>
+		<input type="submit" name="" value = "Search"> 
+	</form>
 	<div class = "date-column">
 		<%for(let i = 0; i < tasks.length;i++){%>
 		<%if(dates[i] != ""){%>

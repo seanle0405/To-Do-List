@@ -44,8 +44,8 @@ router.get("/sort/date", (req,res) =>{
 	Task.find({}).sort("dueDate").exec((err, allTasks) =>{
 		res.render("index_date.ejs",{
 			tasks: allTasks.filter(task => !task.completed),
-			relatedTo: createRelatedList(allTasks),
-			dates: createDateArray(allTasks)
+			relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
+			dates: createDateArray(allTasks.filter(task => !task.completed))
 		})
 	})
 })
@@ -142,5 +142,21 @@ router.get("/filter/:relatedTo", (req,res) =>{
 router.post("/filter/relatedTo", (req,res) =>{
 	res.redirect("/tasks/filter/"+req.body.relatedTo)
 })
+
+//byDate
+router.get("/sort/date/filter/:relatedTo", (req,res) =>{
+	Task.find({}).sort("dueDate").exec((err, allTasks) =>{
+		res.render("index_date.ejs",{
+			tasks: allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo)),
+			relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
+			dates: createDateArray(allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo)))
+		})
+	})
+})
+router.post("/sort/date/filter/relatedTo", (req,res)=>{
+	res.redirect("/tasks/sort/date/filter/" + req.body.relatedTo)
+})
+
+
 
 module.exports = router
