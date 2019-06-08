@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const Task = require("../models/tasks.js")
 const moment = require("moment")
+const session = require("express-session")
 
 const createRelatedList = (allTasks) =>{
 	let relatedList = []
@@ -41,18 +42,39 @@ const createAllDateArray = (allTasks) =>{
 
 //INDEX
 router.get("/", (req,res) =>{
-	Task.find({}, (err, allTasks)=>{
-		res.render("index.ejs", {
-			hTasks: allTasks.filter(task => task.priority === "high" && !task.completed),
-			mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed),
-			lTasks: allTasks.filter(task => task.priority === "low" && !task.completed),
-			cTasks: allTasks.filter(task => task.completed),
-			hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed)),
-			mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed)),
-			lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed)),
-			relatedTo: createRelatedList(allTasks)
+	if(req.session.currentUser){
+		if(req.session.currentUser.username == "admin"){
+			Task.find({}, (err, allTasks)=>{
+			res.render("index.ejs", {
+				hTasks: allTasks.filter(task => task.priority === "high" && !task.completed),
+				mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed),
+				lTasks: allTasks.filter(task => task.priority === "low" && !task.completed),
+				cTasks: allTasks.filter(task => task.completed),
+				hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed)),
+				mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed)),
+				lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed)),
+				relatedTo: createRelatedList(allTasks),
+				currentUser: req.session.currentUser
+			})
 		})
-	})
+		}else{
+			Task.find({user: req.session.currentUser.username}, (err, allTasks)=>{
+				res.render("index.ejs", {
+					hTasks: allTasks.filter(task => task.priority === "high" && !task.completed),
+					mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed),
+					lTasks: allTasks.filter(task => task.priority === "low" && !task.completed),
+					cTasks: allTasks.filter(task => task.completed),
+					hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed)),
+					mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed)),
+					lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed)),
+					relatedTo: createRelatedList(allTasks),
+					currentUser: req.session.currentUser
+				})
+			})
+		}
+	}else{
+		res.redirect("/sessions/new")
+	}
 })
 //byDate
 router.get("/sort/date", (req,res) =>{
@@ -60,14 +82,15 @@ router.get("/sort/date", (req,res) =>{
 		res.render("index_date.ejs",{
 			tasks: allTasks.filter(task => !task.completed),
 			relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
-			dates: createDateArray(allTasks.filter(task => !task.completed))
+			dates: createDateArray(allTasks.filter(task => !task.completed)),
+			currentUser: req.session.currentUser
 		})
 	})
 })
 
 //NEW
 router.get("/new", (req,res)=>{
-	res.render("new.ejs")
+	res.render("new.ejs", {currentUser: req.session.currentUser})
 })
 router.post("/", (req,res)=>{
 	let relatedTo = req.body.relatedTo.split(",")
@@ -77,7 +100,6 @@ router.post("/", (req,res)=>{
 	req.body.relatedTo = relatedTo
 	req.body.dueDate = moment(req.body.dueDate).format()
 	Task.create(req.body, (err, createdTask)=>{
-		console.log(createdTask)
 		res.redirect("/tasks")
 	})
 })
@@ -88,7 +110,10 @@ router.get("/:id", (req,res)=>{
 		console.log(foundTask)
 		res.render("show.ejs", {
 			task: foundTask, 
-			date: moment(foundTask.dueDate).format("MMMM Do, YYYY")})
+			date: moment(foundTask.dueDate).format("MMMM Do, YYYY"),
+			currentUser: req.session.currentUser
+		})
+
 	})
 })
 
@@ -109,7 +134,8 @@ router.get("/:id/edit", (req,res) =>{
 		res.render("edit.ejs", {
 			task: foundTask, 
 			relatedTo: relatedTo,
-			date: moment(foundTask.dueDate).format("MM/DD/YYYY")
+			date: moment(foundTask.dueDate).format("MM/DD/YYYY"),
+			currentUser: req.session.currentUser
 		})
 	})
 })
@@ -152,7 +178,8 @@ router.get("/filter/:relatedTo", (req,res) =>{
 			hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
 			mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
 			lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
-			relatedTo: createRelatedList(allTasks)
+			relatedTo: createRelatedList(allTasks),
+			currentUser: req.session.currentUser
 		})
 	})
 })
@@ -167,7 +194,8 @@ router.get("/sort/date/filter/:relatedTo", (req,res) =>{
 		res.render("index_date.ejs",{
 			tasks: allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo)),
 			relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
-			dates: createDateArray(allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo)))
+			dates: createDateArray(allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+			currentUser: req.session.currentUser
 		})
 	})
 })

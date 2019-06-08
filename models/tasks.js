@@ -6,7 +6,8 @@ const taskSchema = new mongoose.Schema({
 	completed: {type: Boolean, default: false},
 	dueDate: {type: Date, default: Date.now},
 	relatedTo: [String],
-	description: String
+	description: String,
+	user: String
 })
 
 const Task = mongoose.model("Task", taskSchema)

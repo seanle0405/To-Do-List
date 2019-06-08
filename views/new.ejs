@@ -6,7 +6,12 @@
 <body>
 	<% include ./partials/nav.ejs %>
 	<div class = "input-container">
-		<h1>Create New Task</h1>
+		<h1>Create New Task</h1>		
+		<h3>
+			<%if(currentUser){%>
+				for <%=currentUser.username%>
+			<%}%>				
+		</h3>
 		<form action = "/tasks" method="POST">
 			Task: <input type="text" name="name"><br/>
 			Priority: 
@@ -17,10 +22,13 @@
 			</select>
 			<br/>
 			Due Date: <input type="text" name="dueDate" placeholder="mm/dd/yyy"><br/>
+			<%if(currentUser){%>
+			<input type="hidden" name="user" value = "<%=currentUser.username%>">
+			<%}%>
 			Related To: <input type="text" name="relatedTo" placeholder="tag1, tag2, tag3..."><br/>
 			Description: <br/>
 			<textarea rows = "3" cols = "50" name = "description"></textarea>
-			<br/>
+			<br/>			
 			<input type="submit" name="" value="Create New Task">
 		</form>
 	</div>	

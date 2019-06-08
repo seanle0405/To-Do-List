@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<% include ../partials/head.ejs %>
+</head>
+<body>
+	<h1>Sign In Page</h1>
+	<form action="/sessions" method="POST">
+	         <input type="text" name="username" placeholder="username"/>
+	         <input type="password" name="password" />
+	         <input type="submit" value="Sign In" />
+	</form>
+	<button onclick = "window.location.href = '/users/new'">Register</button>
+</body>
+</html>

@@ -4,7 +4,7 @@
 	<% include ./partials/head.ejs %>
 </head>
 <body>
-	<% include ./partials/nav.ejs%>
+	<% include ./partials/nav.ejs%>	
 	<form action = "/tasks/filter/relatedTo" method="POST">
 		Related To:
 		<input type="text" name="relatedTo" list="related-list">
@@ -19,22 +19,22 @@
 		<div class="priority-column">
 			<h2>High Priority Tasks</h2>
 			<%for(let i = 0; i < hTasks.length;i++){%>
-			<div class = "task">
-				<h4><a href = "/tasks/<%=hTasks[i].id%>"><%=hTasks[i].name%></a></h4>
-				<h5 class = <%if(hTasks[i].priority === "high"){%>
-						"high-priority"
-					<%}else if(hTasks[i].priority === "medium"){%>
-						"medium-priority"
-					<%}else{%>
-						"low-priority"
-					<%}%>
-			>Priority: <%=hTasks[i].priority%></h5>
-				<h5>Due Date: <%=hDates[i]%></h5>
-				<form action="/tasks/<%=hTasks[i].id%>" method = "POST">
-					<input type="submit" name="" value="Completed">
-				</form>
-				<button onclick = "window.location.href='/tasks/<%=hTasks[i].id%>/edit'">Edit</button>
-			</div>
+				<div class = "task">
+					<h4><a href = "/tasks/<%=hTasks[i].id%>"><%=hTasks[i].name%></a></h4>
+					<h5 class = <%if(hTasks[i].priority === "high"){%>
+							"high-priority"
+						<%}else if(hTasks[i].priority === "medium"){%>
+							"medium-priority"
+						<%}else{%>
+							"low-priority"
+						<%}%>
+				>Priority: <%=hTasks[i].priority%></h5>
+					<h5>Due Date: <%=hDates[i]%></h5>
+					<form action="/tasks/<%=hTasks[i].id%>" method = "POST">
+						<input type="submit" name="" value="Completed">
+					</form>
+					<button onclick = "window.location.href='/tasks/<%=hTasks[i].id%>/edit'">Edit</button>
+				</div>
 			<%}%>
 		</div>
 		<div class="priority-column">

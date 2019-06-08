@@ -1,6 +1,14 @@
 <div class = "nav">
 	<h1>To Do List</h1>
-	<button onclick = "window.location.href = '/tasks/new'">Create New Task</button>
-	<button onclick = "window.location.href = '/tasks/sort/date'">Upcoming Tasks</button>	
-	<button onclick = "window.location.href = '/tasks'">Main Page</button>	
+	<%if(currentUser){%>
+		<form action="/sessions?_method=DELETE" method="POST">
+			<input type="submit" value="Logout">
+		</form>
+	<%}else{%>
+		<button onclick = "window.location.href = '/sessions/new'">Log In</button>
+	 <%}%>
+	<button onclick = "window.location.href = '/users/new'">Register</button>
+	<button class = "nav-button" onclick = "window.location.href = '/tasks/new'">Create New Task</button>
+	<button class = "nav-button" onclick = "window.location.href = '/tasks/sort/date'">Upcoming Tasks</button>	
+	<button class = "nav-button" onclick = "window.location.href = '/tasks'">Main Page</button>	
 </div>
