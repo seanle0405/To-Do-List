@@ -23,7 +23,7 @@
 			<br/>
 			Due Date: <input type="text" name="dueDate" placeholder="mm/dd/yyy"><br/>
 			<%if(currentUser){%>
-			<input type="hidden" name="user" value = "<%=currentUser.username%>">
+				<input type="hidden" name="user" value = "<%=currentUser.username%>">
 			<%}%>
 			Related To: <input type="text" name="relatedTo" placeholder="tag1, tag2, tag3..."><br/>
 			Description: <br/>

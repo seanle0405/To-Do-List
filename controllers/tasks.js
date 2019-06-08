@@ -45,18 +45,18 @@ router.get("/", (req,res) =>{
 	if(req.session.currentUser){
 		if(req.session.currentUser.username == "admin"){
 			Task.find({}, (err, allTasks)=>{
-			res.render("index.ejs", {
-				hTasks: allTasks.filter(task => task.priority === "high" && !task.completed),
-				mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed),
-				lTasks: allTasks.filter(task => task.priority === "low" && !task.completed),
-				cTasks: allTasks.filter(task => task.completed),
-				hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed)),
-				mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed)),
-				lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed)),
-				relatedTo: createRelatedList(allTasks),
-				currentUser: req.session.currentUser
+				res.render("index.ejs", {
+					hTasks: allTasks.filter(task => task.priority === "high" && !task.completed),
+					mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed),
+					lTasks: allTasks.filter(task => task.priority === "low" && !task.completed),
+					cTasks: allTasks.filter(task => task.completed),
+					hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed)),
+					mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed)),
+					lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed)),
+					relatedTo: createRelatedList(allTasks),
+					currentUser: req.session.currentUser
+				})
 			})
-		})
 		}else{
 			Task.find({user: req.session.currentUser.username}, (err, allTasks)=>{
 				res.render("index.ejs", {
@@ -78,14 +78,30 @@ router.get("/", (req,res) =>{
 })
 //byDate
 router.get("/sort/date", (req,res) =>{
-	Task.find({}).sort("dueDate").exec((err, allTasks) =>{
-		res.render("index_date.ejs",{
-			tasks: allTasks.filter(task => !task.completed),
-			relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
-			dates: createDateArray(allTasks.filter(task => !task.completed)),
-			currentUser: req.session.currentUser
-		})
-	})
+	if(req.session.currentUser){
+		if(req.session.currentUser.username == "admin"){
+			Task.find({}).sort("dueDate").exec((err, allTasks) =>{
+				res.render("index_date.ejs",{
+					tasks: allTasks.filter(task => !task.completed),
+					relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
+					dates: createDateArray(allTasks.filter(task => !task.completed)),
+					currentUser: req.session.currentUser
+				})
+			})
+		}else{
+			Task.find({user: req.session.currentUser.username}).sort("dueDate").exec((err, allTasks) =>{
+				res.render("index_date.ejs",{
+					tasks: allTasks.filter(task => !task.completed),
+					relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
+					dates: createDateArray(allTasks.filter(task => !task.completed)),
+					currentUser: req.session.currentUser
+				})
+			})
+		}
+	}else{
+		res.redirect("/sessions/new")
+	}
+	
 })
 
 //NEW
@@ -169,19 +185,40 @@ router.post("/:id", (req, res) =>{
 
 //FILTER
 router.get("/filter/:relatedTo", (req,res) =>{
-	Task.find({}, (err, allTasks) =>{
-		res.render("index.ejs", {
-			hTasks: allTasks.filter(task => task.priority === "high" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
-			mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
-			lTasks: allTasks.filter(task => task.priority === "low" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
-			cTasks: allTasks.filter(task => task.completed && task.relatedTo.includes(req.params.relatedTo)),
-			hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
-			mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
-			lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
-			relatedTo: createRelatedList(allTasks),
-			currentUser: req.session.currentUser
-		})
-	})
+	if(req.session.currentUser){
+		if(req.session.currentUser.username == "admin"){
+			Task.find({}, (err, allTasks) =>{
+				res.render("index.ejs", {
+					hTasks: allTasks.filter(task => task.priority === "high" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					lTasks: allTasks.filter(task => task.priority === "low" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					cTasks: allTasks.filter(task => task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+					mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+					lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+					relatedTo: createRelatedList(allTasks),
+					currentUser: req.session.currentUser
+				})
+			})
+		}else{
+			Task.find({user: req.session.currentUser.username}, (err, allTasks) =>{
+				res.render("index.ejs", {
+					hTasks: allTasks.filter(task => task.priority === "high" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					mTasks: allTasks.filter(task => task.priority === "medium" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					lTasks: allTasks.filter(task => task.priority === "low" && !task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					cTasks: allTasks.filter(task => task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					hDates: createAllDateArray(allTasks.filter(task => task.priority === "high" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+					mDates: createAllDateArray(allTasks.filter(task => task.priority === "medium" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+					lDates: createAllDateArray(allTasks.filter(task => task.priority === "low" && !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+					relatedTo: createRelatedList(allTasks),
+					currentUser: req.session.currentUser
+				})
+			})
+		}
+	}else{
+		res.redirect("/sessions/new")
+	}
+	
 })
 
 router.post("/filter/relatedTo", (req,res) =>{
@@ -190,14 +227,31 @@ router.post("/filter/relatedTo", (req,res) =>{
 
 //byDate
 router.get("/sort/date/filter/:relatedTo", (req,res) =>{
-	Task.find({}).sort("dueDate").exec((err, allTasks) =>{
-		res.render("index_date.ejs",{
-			tasks: allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo)),
-			relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
-			dates: createDateArray(allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo))),
-			currentUser: req.session.currentUser
-		})
-	})
+	if(req.session.currentUser){
+		if(req.session.currentUser.username == "admin"){
+			Task.find({}).sort("dueDate").exec((err, allTasks) =>{
+				res.render("index_date.ejs",{
+					tasks: allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
+					dates: createDateArray(allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+					currentUser: req.session.currentUser
+				})
+			})
+		}else{
+			Task.find({user: req.session.currentUser.username}).sort("dueDate").exec((err, allTasks) =>{
+				res.render("index_date.ejs",{
+					tasks: allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo)),
+					relatedTo: createRelatedList(allTasks.filter(task => !task.completed)),
+					dates: createDateArray(allTasks.filter(task => !task.completed && task.relatedTo.includes(req.params.relatedTo))),
+					currentUser: req.session.currentUser
+				})
+			})
+
+		}
+	}else{
+		res.redirect("/sessions/new")
+	}
+	
 })
 router.post("/sort/date/filter/relatedTo", (req,res)=>{
 	res.redirect("/tasks/sort/date/filter/" + req.body.relatedTo)

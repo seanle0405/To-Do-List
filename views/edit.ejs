@@ -29,6 +29,7 @@
 			</select>
 			<br/>
 			Due Date: <input type="text" name="dueDate" value="<%=date%>"><br/>
+			<input type="hidden" name="user" value = "<%=task.user%>">
 			Completed: 
 			<input type="checkbox" name="completed"
 	            <% if(task.completed === true){ %>
