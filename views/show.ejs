@@ -24,13 +24,14 @@
 				No
 			<%}%>
 		</h5>
-		<h5>Related To: </h5>
-		<ul>
-			<%for(let i = 0; i < task.relatedTo.length; i++){%>
-				<li><%=task.relatedTo[i]%></li>
-			<%}%>
-		</ul>
-		<h5>Description:</h5>
+		<%if(task.relatedTo.length != 0){%>
+			<h5>Related To: </h5>
+				<ul>
+					<%for(let i = 0; i < task.relatedTo.length; i++){%>
+						<li><%=task.relatedTo[i]%></li>
+					<%}%>
+				</ul>
+		<%}%>
 		<p><%=task.description%></p>
 		<h5>User: <%=task.user%></h5>	
 		<form action="/tasks/<%=task.id%>?_method=DELETE" method="POST">

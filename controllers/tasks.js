@@ -109,10 +109,17 @@ router.get("/new", (req,res)=>{
 	res.render("new.ejs", {currentUser: req.session.currentUser})
 })
 router.post("/", (req,res)=>{
-	let relatedTo = req.body.relatedTo.split(",")
-	for(let i = 0; i< relatedTo.length; i++){
-		relatedTo[i] = relatedTo[i].trim()
+	let relatedTo
+	if(req.body.relatedTo === ""){
+		relatedTo = []
+	}else{
+		relatedTo = req.body.relatedTo.split(",")
+		for(let i = 0; i< relatedTo.length; i++){
+			relatedTo[i] = relatedTo[i].trim()
+		}
+
 	}
+	
 	req.body.relatedTo = relatedTo
 	req.body.dueDate = moment(req.body.dueDate).format()
 	Task.create(req.body, (err, createdTask)=>{
@@ -123,7 +130,6 @@ router.post("/", (req,res)=>{
 //SHOW
 router.get("/:id", (req,res)=>{
 	Task.findById(req.params.id, (err, foundTask)=>{
-		console.log(foundTask)
 		res.render("show.ejs", {
 			task: foundTask, 
 			date: moment(foundTask.dueDate).format("MMMM Do, YYYY"),

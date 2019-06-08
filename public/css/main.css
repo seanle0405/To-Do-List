@@ -77,6 +77,10 @@ form{
 	color: black;
 }
 
+.date-column .task{
+	height: 180px;
+}
+
 .show-containter{
 	margin: 0 auto;
 	max-width: 420px;
