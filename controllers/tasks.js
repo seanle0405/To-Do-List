@@ -168,9 +168,15 @@ router.put("/:id", (req, res)=>{
 	}else{
 		req.body.completed = false
 	}
-	let relatedTo = req.body.relatedTo.split(",")
-	for(let i = 0; i< relatedTo.length; i++){
-		relatedTo[i] = relatedTo[i].trim()
+	let relatedTo
+	if(req.body.relatedTo === ""){
+		relatedTo = []
+	}else{
+		relatedTo = req.body.relatedTo.split(",")
+		for(let i = 0; i< relatedTo.length; i++){
+			relatedTo[i] = relatedTo[i].trim()
+		}
+
 	}
 	req.body.relatedTo = relatedTo
 	req.body.dueDate = moment(req.body.dueDate).format()

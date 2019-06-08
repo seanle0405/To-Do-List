@@ -19,7 +19,7 @@ body{
 }
 
 .task{
-	height: 170px;
+	min-height: 170px;
 	width: 380px;
 	text-align: left;
 	border-radius: 10px;
@@ -78,7 +78,7 @@ form{
 }
 
 .date-column .task{
-	height: 180px;
+	min-height: 180px;
 }
 
 .show-containter{
